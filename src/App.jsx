@@ -6,9 +6,10 @@ import "./App.css";
 function App() {
   const [provider, setProvider] = useState(null);
 
+  // Fonction de validation d'envoie d'ETH
   const submitTransaction = async (to, amount) => {
     if (!provider) {
-      console.log("Wallet not connected");
+      console.log("Your wallet is not connected !");
       return;
     }
   };

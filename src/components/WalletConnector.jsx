@@ -1,35 +1,40 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useAccount, useConnect, useDisconnect } from "wagmi";
 
-const WalletConnector = ({ setProvider }) => {
+const WalletConnector = () => {
+  // const { connect, connectors } = useConnect();
+  // const { disconnect } = useDisconnect();
+  // const { data: accountData, isError, isLoading } = useAccount();
+  // const [isConnected, setIsConnected] = useState(false);
+
   const { connect, connectors } = useConnect();
+  const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
-  const { data: accountData } = useAccount();
-
-  // Voir les Wallets présents sur mon navigateur
-  useEffect(() => {
-    console.log("Connectors:", connectors);
-  }, [connectors]);
 
   useEffect(() => {
-    if (accountData?.connector) {
-      setProvider(accountData.connector);
-    }
-  }, [accountData, setProvider]);
+    console.log(
+      `Current connection status: ${isConnected ? "connected" : "disconnected"}`
+    );
+  }, [isConnected]);
 
-  // Voir tous les détails des différents wallets
-  const handleConnect = (connector) => {
-    console.log("Attempting to connect with:", connector);
-    if (!connector) {
-      console.error("No connector provided");
-      return;
-    }
-    if (!connectors.some((c) => c.id === connector.id)) {
-      console.error("Connector not found");
-      return;
-    }
-    connect(connector);
-  };
+  // useEffect(() => {
+  //   console.log("Account data:", accountData);
+  //   setIsConnected(!!accountData?.address);
+  // }, [accountData]);
+
+  // const handleConnect = async (connectorId) => {
+  //   const connector = connectors.find((c) => c.id === connectorId);
+  //   if (!connector) {
+  //     console.error("Connector not found:", connectorId);
+  //     return;
+  //   }
+
+  //   try {
+  //     await connect({ connector });
+  //   } catch (error) {
+  //     console.error("Failed to connect:", error);
+  //   }
+  // };
 
   return (
     <>
@@ -38,10 +43,10 @@ const WalletConnector = ({ setProvider }) => {
       </div>
       <div className="mt-4 border border-blue-400"></div>
       <div>
-        {accountData ? (
+        {isConnected ? (
           <>
             <div className="mt-4">
-              <p className="font-normal">Connected as: {accountData.address}</p>
+              <p className="font-normal">Connected as : {address}</p>
               <button
                 onClick={() => disconnect()}
                 className="w-60 h-10 mt-4 bg-red-400 border rounded-md font-normal"
@@ -54,15 +59,15 @@ const WalletConnector = ({ setProvider }) => {
           connectors.map((connector) => (
             <button
               key={connector.id}
-              onClick={() => handleConnect(connector)}
+              onClick={() => connect({ connector })}
               className="w-80 h-10 mt-4 bg-blue-400 border rounded-md font-normal"
             >
               Connect with {connector.name}
             </button>
           ))
         )}
-        <div className="mt-4 border border-blue-400"></div>
       </div>
+      <div className="mt-4 border border-blue-400"></div>
     </>
   );
 };
