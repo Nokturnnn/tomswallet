@@ -6,31 +6,23 @@ import "./index.css";
 // WAGMI
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
-import { sepolia } from "@wagmi/core/chains";
 import { publicProvider } from "wagmi/providers/public";
-import { CoinbaseWalletConnector } from "wagmi/connectors/coinbaseWallet";
+import { sepolia } from "@wagmi/core/chains";
 import { InjectedConnector } from "wagmi/connectors/injected";
-import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { WalletConnectConnector } from "wagmi/connectors/walletConnect";
 
-const { chains, provider, webSocketProvider } = configureChains(
+const { chains, publicClient, webSocketPublicClient } = configureChains(
   [sepolia],
-  [publicProvider()]
+  [
+    alchemyProvider({ apiKey: "gs7z6f2fCltK-vme1UrG7VXsqXAi1Kyt" }),
+    publicProvider(),
+  ]
 );
 
 const config = createConfig({
-  autoConnect: false,
-  provider,
-  webSocketProvider,
-  connectors: [
-    new InjectedConnector({
-      chains,
-      options: {
-        name: "Rabby Wallet",
-        shimDisconnect: true,
-      },
-    }),
-  ],
+  autoConnect: true,
+  connectors: [new InjectedConnector({ chains })],
+  publicClient,
+  webSocketPublicClient,
 });
 
 const root = ReactDOM.createRoot(document.getElementById("root"));

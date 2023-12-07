@@ -1,40 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useAccount, useConnect, useDisconnect } from "wagmi";
+import React from "react";
+import { useConnect, useDisconnect, useAccount } from "wagmi";
 
 const WalletConnector = () => {
-  // const { connect, connectors } = useConnect();
-  // const { disconnect } = useDisconnect();
-  // const { data: accountData, isError, isLoading } = useAccount();
-  // const [isConnected, setIsConnected] = useState(false);
-
   const { connect, connectors } = useConnect();
   const { isConnected, address } = useAccount();
   const { disconnect } = useDisconnect();
-
-  useEffect(() => {
-    console.log(
-      `Current connection status: ${isConnected ? "connected" : "disconnected"}`
-    );
-  }, [isConnected]);
-
-  // useEffect(() => {
-  //   console.log("Account data:", accountData);
-  //   setIsConnected(!!accountData?.address);
-  // }, [accountData]);
-
-  // const handleConnect = async (connectorId) => {
-  //   const connector = connectors.find((c) => c.id === connectorId);
-  //   if (!connector) {
-  //     console.error("Connector not found:", connectorId);
-  //     return;
-  //   }
-
-  //   try {
-  //     await connect({ connector });
-  //   } catch (error) {
-  //     console.error("Failed to connect:", error);
-  //   }
-  // };
 
   return (
     <>

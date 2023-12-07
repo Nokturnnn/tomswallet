@@ -1,73 +1,92 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.0;
 
-// Déclaration du contrat MultiSigWallet
-contract MultiSigWallet 
-{
-    // Déclaration des adresses publiques des deux utilisateurs (propriétaires) du wallet
-    address public user1;
-    address public user2;
+contract MultiSigWallet {
+    address[] public owners;
+    uint public required;
 
-    // Tableau dynamique pour stocker les transactions proposées
-    Transaction[] public transactions;
-
-    // Mapping pour suivre les approbations de chaque transaction par utilisateur
-    mapping(uint256 => mapping(address => bool)) public approvals;
-
-    // Structure de données pour représenter une transaction
-    struct Transaction 
-    {
-        address to;     // Adresse destinataire de l'Ether
-        uint value;     // Montant de l'Ether à envoyer
-        bool executed;  // Statut d'exécution de la transaction
+    struct Transaction {
+        address to;
+        uint value;
+        bytes data;
+        bool executed;
+        mapping(address => bool) isConfirmed;
     }
 
-    // Modifier pour restreindre l'accès aux seuls propriétaires du wallet
-    modifier onlyOwner() 
-    {
-        require(msg.sender == user1 || msg.sender == user2, "Not an owner");
+    Transaction[] public transactions;
+
+    modifier onlyOwner() {
+        require(isOwner(msg.sender), "Not an owner");
         _;
     }
 
-    // Constructeur pour initialiser les adresses des deux utilisateurs lors de la création du contrat
-    constructor(address _user1, address _user2) 
-    {
-        user1 = _user1;
-        user2 = _user2;
+    modifier txExists(uint _txIndex) {
+        require(_txIndex < transactions.length, "Transaction does not exist");
+        _;
     }
 
-    // Fonction pour soumettre une nouvelle transaction par un des propriétaires
-    function submitTransaction(address _to, uint _value) public onlyOwner 
-    {
-        uint txIndex = transactions.length; // Obtenir l'index de la nouvelle transaction
-        transactions.push(Transaction({
-            to: _to,
-            value: _value,
-            executed: false
-        }));
-
-        // Initialiser les approbations pour cette transaction à false
-        approvals[txIndex][user1] = false;
-        approvals[txIndex][user2] = false;
+    modifier notExecuted(uint _txIndex) {
+        require(!transactions[_txIndex].executed, "Transaction already executed");
+        _;
     }
 
-    // Fonction permettant à un l'autre propriétaire d'approuver une transaction
-    function approveTransaction(uint _txIndex) public onlyOwner 
-    {
-        require(!approvals[_txIndex][msg.sender], "Transaction already approved");
-        approvals[_txIndex][msg.sender] = true; // Marquer la transaction comme approuvée par l'émetteur
+    modifier notConfirmed(uint _txIndex) {
+        require(!transactions[_txIndex].isConfirmed[msg.sender], "Transaction already confirmed");
+        _;
     }
 
-    // Fonction pour exécuter une transaction une fois qu'elle a été approuvée par les deux propriétaires
-    function executeTransaction(uint _txIndex) public onlyOwner 
-    {
-        require(transactions[_txIndex].executed == false, "Transaction already executed");
-        require(approvals[_txIndex][user1] && approvals[_txIndex][user2], "Transaction not approved by both owners");
+    constructor(address owner1, address owner2, uint _required) {
+        require(owner1 != address(0), "Invalid owner1");
+        require(owner2 != address(0), "Invalid owner2");
+        require(_required > 0 && _required <= 2, "Invalid required number of owners");
 
-        transactions[_txIndex].executed = true; // Marquer la transaction comme exécutée
-        payable(transactions[_txIndex].to).transfer(transactions[_txIndex].value); // Transférer l'Ether au destinataire
+        owners.push(owner1);
+        owners.push(owner2);
+
+        required = _required;
     }
 
-    // Fonction pour permettre au contrat de recevoir de l'Ether
-    receive() external payable {}
+    function isOwner(address _address) public view returns (bool) {
+        for (uint i = 0; i < owners.length; i++) {
+            if (owners[i] == _address) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function submitTransaction(address _to, uint _value, bytes memory _data) public onlyOwner {
+        uint txIndex = transactions.length;
+
+        transactions.push();
+        Transaction storage t = transactions[txIndex];
+        t.to = _to;
+        t.value = _value;
+        t.data = _data;
+        t.executed = false;
+    }
+
+    function confirmTransaction(uint _txIndex) public onlyOwner txExists(_txIndex) notExecuted(_txIndex) notConfirmed(_txIndex) {
+        Transaction storage transaction = transactions[_txIndex];
+        transaction.isConfirmed[msg.sender] = true;
+    }
+
+    function isConfirmed(uint _txIndex) public view returns (bool) {
+        uint count = 0;
+        for (uint i = 0; i < owners.length; i++) {
+            if (transactions[_txIndex].isConfirmed[owners[i]]) count++;
+        }
+        return (count >= required);
+    }
+
+    function executeTransaction(uint _txIndex) public txExists(_txIndex) notExecuted(_txIndex) {
+        Transaction storage transaction = transactions[_txIndex];
+
+        require(isConfirmed(_txIndex), "Cannot execute transaction");
+        transaction.executed = true;
+        (bool success, ) = transaction.to.call{value: transaction.value}(transaction.data);
+        require(success, "Transaction failed");
+    }
+
+    function deposit() external payable {}
 }

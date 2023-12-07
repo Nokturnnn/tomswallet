@@ -12,10 +12,14 @@
   "dependencies": {
     "@wagmi/chains": "^1.8.0",
     "@walletconnect/web3-provider": "^1.8.0",
+    "@web3-react/core": "^8.2.3",
+    "ethereumjs-util": "^7.1.5",
     "ethers": "^6.9.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "wagmi": "^1.4.7"
+    "use-debounce": "^10.0.0",
+    "wagmi": "^1.4.7",
+    "web3modal": "^1.9.12"
   },
   "devDependencies": {
     "@types/react": "^18.2.37",
