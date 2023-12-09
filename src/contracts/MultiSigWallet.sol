@@ -55,15 +55,15 @@ contract MultiSigWallet {
         return false;
     }
 
-    function submitTransaction(address _to, uint _value, bytes memory _data) public onlyOwner {
+    function submitTransaction(address _to, uint _value, bytes memory _data) public onlyOwner payable {
         uint txIndex = transactions.length;
 
-        transactions.push();
-        Transaction storage t = transactions[txIndex];
-        t.to = _to;
-        t.value = _value;
-        t.data = _data;
-        t.executed = false;
+        transactions.push(); // Ajoute une nouvelle transaction vide au tableau
+        Transaction storage t = transactions[txIndex]; // Référence la nouvelle transaction
+        t.to = _to; // Définit l'adresse destinataire
+        t.value = _value; // Définit la valeur (en wei) à envoyer
+        t.data = _data; // Définit les données de la transaction
+        t.executed = false; // Marque la transaction comme non exécutée
     }
 
     function confirmTransaction(uint _txIndex) public onlyOwner txExists(_txIndex) notExecuted(_txIndex) notConfirmed(_txIndex) {

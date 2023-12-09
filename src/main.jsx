@@ -18,9 +18,18 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   ]
 );
 
+// Set up wagmi config
 const config = createConfig({
   autoConnect: true,
-  connectors: [new InjectedConnector({ chains })],
+  connectors: [
+    new InjectedConnector({
+      chains,
+      options: {
+        name: "Rabby",
+        shimDisconnect: true,
+      },
+    }),
+  ],
   publicClient,
   webSocketPublicClient,
 });
