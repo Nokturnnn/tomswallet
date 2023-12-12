@@ -9,13 +9,17 @@ Pour installer et exécuter ce projet, suivez les étapes ci-dessous :
 
 1. **Cloner le Répertoire** :
    `git clone [url-du-repository]`
+
+
    `cd [nom-du-dossier]`
 
-2. **Installer les Dépendances** :
+3. **Installer les Dépendances** :
    `npm install`
 
-3. **Démarrer le Serveur de Développement** :
+4. **Démarrer le Serveur de Développement** :
    `npm run dev`
+
+   
    Cela lancera l'application en mode développement. Ouvrez `[http://localhost:3000]` pour la visualiser dans le navigateur.
 
 ## Composants de l'Application
