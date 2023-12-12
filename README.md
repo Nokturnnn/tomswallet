@@ -8,20 +8,14 @@ PS : Il y a encore des erreurs que je n'ai pas catch donc il y a des parties de 
 Pour installer et exécuter ce projet, suivez les étapes ci-dessous :
 
 1. **Cloner le Répertoire** :
-   \`sh
    git clone [url-du-repository]
    cd [nom-du-dossier]
-   \`
 
 2. **Installer les Dépendances** :
-   \```sh
    npm install
-   \```
 
 3. **Démarrer le Serveur de Développement** :
-   \```sh
    npm run dev
-   \```
    Cela lancera l'application en mode développement. Ouvrez [http://localhost:3000] pour la visualiser dans le navigateur.
 
 ## Composants de l'Application
