@@ -8,10 +8,8 @@ PS : Il y a encore des erreurs que je n'ai pas catch donc il y a des parties de 
 Pour installer et exécuter ce projet, suivez les étapes ci-dessous :
 
 1. **Cloner le Répertoire** :
-   `git clone [url-du-repository]`
-
-
-   `cd [nom-du-dossier]`
+   *`git clone [url-du-repository]`
+   *`cd [nom-du-dossier]`
 
 3. **Installer les Dépendances** :
    `npm install`
