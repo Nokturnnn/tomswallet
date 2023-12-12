@@ -8,10 +8,10 @@ PS : Il y a encore des erreurs que je n'ai pas catch donc il y a des parties de 
 Pour installer et exécuter ce projet, suivez les étapes ci-dessous :
 
 1. **Cloner le Répertoire** :
-   \```sh
+   \`sh
    git clone [url-du-repository]
    cd [nom-du-dossier]
-   \```
+   \`
 
 2. **Installer les Dépendances** :
    \```sh
