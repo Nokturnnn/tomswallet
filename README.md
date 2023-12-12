@@ -12,11 +12,11 @@ Pour installer et exécuter ce projet, suivez les étapes ci-dessous :
    `cd [nom-du-dossier]`
 
 2. **Installer les Dépendances** :
-   npm install
+   `npm install`
 
 3. **Démarrer le Serveur de Développement** :
-   npm run dev
-   Cela lancera l'application en mode développement. Ouvrez [http://localhost:3000] pour la visualiser dans le navigateur.
+   `npm run dev`
+   Cela lancera l'application en mode développement. Ouvrez `[http://localhost:3000]` pour la visualiser dans le navigateur.
 
 ## Composants de l'Application
 
