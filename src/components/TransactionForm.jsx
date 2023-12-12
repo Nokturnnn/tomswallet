@@ -1,8 +1,5 @@
-import * as React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
-  usePrepareSendTransaction,
-  useSendTransaction,
   usePrepareContractWrite,
   useContractWrite,
   useWaitForTransaction,
@@ -12,21 +9,18 @@ import { useDebounce } from "use-debounce";
 
 const TransactionForm = () => {
   // Déclaration des variables d'état
-  const [to, setTo] = React.useState("");
-  const [debouncedTo] = useDebounce(to, 500);
-  const [value, setValue] = React.useState("");
-  const [debouncedAmount] = useDebounce(value, 500);
-  const [_data, setData] = useState("");
+  const [to, setTo] = useState(""); // État pour l'adresse de destination
+  const [value, setValue] = useState(""); // État pour la valeur en ETH
+  const [_data, setData] = useState(""); // État pour les données
 
-  // console.log("Valeur entrée (ETH):", value);
-  // console.log("Valeur debouncée (ETH):", debouncedAmount);
+  const [debouncedTo] = useDebounce(to, 500); // Utilisation de la fonction de debounce pour l'adresse
+  const [debouncedAmount] = useDebounce(value, 500); // Utilisation de la fonction de debounce pour la valeur
 
   let weiValue;
   try {
-    weiValue = parseEther(debouncedAmount || "0"); // Modification pour gérer les valeurs vides
-    // console.log("Valeur convertie en wei:", weiValue.toString());
+    weiValue = parseEther(debouncedAmount || "0"); // Conversion de la valeur en ETH en wei
   } catch (error) {
-    // console.error("Erreur de conversion en wei:", error);
+    console.error("Erreur de conversion en wei:", error);
   }
 
   // Préparation de l'écriture du contrat
@@ -35,36 +29,28 @@ const TransactionForm = () => {
     error: prepareError,
     isError: isPrepareError,
   } = usePrepareContractWrite({
-    address: "0x0a8439FA04043E27734F0277FCD2B45a968416EF",
+    address: "0x6175e6985FCd3F643a73722725e2c8193347284E", // Adresse du contrat
     abi: [
       {
         type: "function",
         name: "submitTransaction",
         inputs: [
-          { name: "_to", type: "address", internalType: "address" },
-          { name: "_value", type: "uint256", internalType: "uint256" },
-          { name: "_data", type: "bytes", internalType: "bytes" },
+          { name: "_to", type: "address", internalType: "address" }, // Adresse du destinataire
+          { name: "_value", type: "uint256", internalType: "uint256" }, // Montant en ETH à envoyer
+          { name: "_data", type: "bytes", internalType: "bytes" }, // Mettre OxO par exemple
         ],
         outputs: [],
         stateMutability: "nonpayable",
       },
     ],
     functionName: "submitTransaction",
-    args: [debouncedTo, "0", _data], // Passage à '0' pour le montant _value
-    value: weiValue, // Ajout de la valeur ETH ici
+    args: [debouncedTo, weiValue, _data], // Arguments pour la fonction du contrat
   });
 
-  // console.log(
-  //   "Arguments de la transaction:",
-  //   debouncedTo,
-  //   weiValue.toString(),
-  //   _data
-  // );
-
-  const { data, error, isError, write } = useContractWrite(config);
+  const { data, error, isError, write } = useContractWrite(config); // Utilisation de useContractWrite pour effectuer l'écriture du contrat
 
   const { isLoading, isSuccess } = useWaitForTransaction({
-    hash: data?.hash,
+    hash: data?.hash, // Attente de la transaction en cours
   });
 
   return (
@@ -72,9 +58,9 @@ const TransactionForm = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
-          write?.();
+          write?.(); // Soumettre la transaction
         }}
-        className="bg-white shadow rounded border-2 px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow rounded border-2 px-8 pt-6 pb-8 mb-8"
       >
         {/* Champ pour _to */}
         <div className="mb-4">
@@ -89,6 +75,7 @@ const TransactionForm = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
+        {/* Champ pour _to */}
 
         {/* Champ pour _value */}
         <div className="mb-4">
@@ -103,6 +90,7 @@ const TransactionForm = () => {
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
+        {/* Champ pour _value */}
 
         {/* Champ pour _data */}
         <div className="mb-4">
@@ -111,15 +99,16 @@ const TransactionForm = () => {
           </label>
           <input
             type="text"
-            value={data}
+            value={_data}
             onChange={(e) => setData(e.target.value)}
             placeholder="Enter data"
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
+        {/* Champ pour _data */}
 
+        {/* Bouton de soumission */}
         <div className="flex flex-col items-center justify-between">
-          {/* Submit Button */}
           <button
             className="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             disabled={!write || isLoading}
@@ -127,17 +116,17 @@ const TransactionForm = () => {
             {isLoading ? "Processing..." : "Submit Transaction"}
           </button>
           <div className="mt-6 text-green-500">
-            {/* Success Message */}
+            {/* Message de succès */}
             {isSuccess && (
               <div className="font-medium font-mono">
                 Transaction successful!
               </div>
             )}
           </div>
-          {/* Error Message */}
-          {(isPrepareError || isError) && (
+          {/* Message d'erreur */}
+          {/* {(isPrepareError || isError) && (
             <div>Error: {(prepareError || error)?.message}</div>
-          )}
+          )} */}
         </div>
       </form>
     </div>

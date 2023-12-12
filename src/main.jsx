@@ -2,8 +2,6 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
-
-// WAGMI
 import { WagmiConfig, createConfig, configureChains } from "wagmi";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
@@ -18,7 +16,7 @@ const { chains, publicClient, webSocketPublicClient } = configureChains(
   ]
 );
 
-// Set up wagmi config
+// Set up Wagmi config
 const config = createConfig({
   autoConnect: true,
   connectors: [
