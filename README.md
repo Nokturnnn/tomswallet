@@ -2,23 +2,24 @@
 
 Ce projet est une application de portefeuille multi-signatures basée sur React et Ethereum. Elle permet aux utilisateurs de connecter leur portefeuille, de déposer des fonds, de soumettre, de confirmer, et d'exécuter des transactions via un contrat intelligent.
 
-
-`PS : Il y a encore des erreurs que je n'ai pas catch donc il y a des parties de mon code qui sont commentées mais vous retrouver plus en détails celles-ci en faisant F12.`
+`PS : Il y a encore des erreurs que je n'ai pas résolues donc il y a des parties de mon code qui sont commentées mais vous retrouver plus en détails celles-ci en faisant F12.`
 
 ## Installation
 
 Pour installer et exécuter ce projet, suivez les étapes ci-dessous :
 
 1. **Cloner le Répertoire** :
-   * `git clone [url-du-repository]`
-   * `cd [nom-du-dossier]`
 
-3. **Installer les Dépendances** :
-   * `npm install`
+   - `git clone https://github.com/Nokturnnn/tomswallet.git`
+   - `cd tomswallet`
 
-4. **Démarrer le Serveur de Développement** :
-   * `npm run dev`
-   * Cela lancera l'application en mode développement. Ouvrez `[http://localhost:3000]` pour la visualiser dans le navigateur.
+2. **Installer les Dépendances** :
+
+   - `npm install`
+
+3. **Démarrer le Serveur de Développement** :
+   - `npm run dev`
+   - Cela lancera l'application en mode développement. Ouvrez `[http://localhost:3000]` pour la visualiser dans le navigateur.
 
 ## Composants de l'Application
 
