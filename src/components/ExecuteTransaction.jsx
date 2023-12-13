@@ -62,13 +62,13 @@ const ExecuteTransaction = () => {
           {/* Champ de saisie pour l'index de la transaction */}
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">
-              Index de la transaction :
+              Transaction Index :
             </label>
             <input
               type="number"
               value={txIndex}
               onChange={onChange}
-              placeholder="Entrez l'index de la transaction"
+              placeholder="Enter Transaction Index for example : 0 / 1 / 2"
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             />
           </div>
@@ -78,7 +78,7 @@ const ExecuteTransaction = () => {
             className="mt-4 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             disabled={!write || isLoading}
           >
-            {isLoading ? "Processing..." : "Exécuter la transaction"}
+            {isLoading ? "Processing..." : "Execute the transaction"}
           </button>
           <div className="mt-6 text-green-500">
             {/* Affiche un message de succès si la transaction est réussie */}
