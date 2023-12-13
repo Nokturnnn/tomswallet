@@ -2,7 +2,7 @@
 
 Ce projet est une application de portefeuille multi-signatures basée sur React et Ethereum. Elle permet aux utilisateurs de connecter leur portefeuille, de déposer des fonds, de soumettre, de confirmer, et d'exécuter des transactions via un contrat intelligent.
 
-`PS : Il y a encore des erreurs que je n'ai pas résolues donc il y a des parties de mon code qui sont commentées mais vous retrouver plus en détails celles-ci en faisant F12.`
+`PS : Il y a encore des erreurs que je n'ai pas résolues donc il y a des parties de mon code qui sont commentées mais vous retrouver plus en détails celles-ci dans la console`
 
 ## Installation
 

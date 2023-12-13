@@ -78,7 +78,7 @@ const ExecuteTransaction = () => {
             className="mt-4 bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
             disabled={!write || isLoading}
           >
-            {isLoading ? "Processing..." : "Execute the transaction"}
+            {isLoading ? "Processing..." : "Execute Transaction"}
           </button>
           <div className="mt-6 text-green-500">
             {/* Affiche un message de succès si la transaction est réussie */}
