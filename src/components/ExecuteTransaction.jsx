@@ -84,7 +84,7 @@ const ExecuteTransaction = () => {
             {/* Affiche un message de succès si la transaction est réussie */}
             {isSuccess && (
               <div className="font-medium font-mono">
-                The transaction was successfully executed !
+                The Transaction was successfully executed !
               </div>
             )}
           </div>
